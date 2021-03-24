@@ -1,0 +1,12 @@
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.search {
+  width: 80%;
+}
+
+.submit {
+  width: 18%;
+}
