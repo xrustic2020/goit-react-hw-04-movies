@@ -1,12 +1,12 @@
 import { Route, NavLink, Switch } from 'react-router-dom';
-import HomePage from './views/HomePage/HomePage';
-import MoviesPage from './views/MoviesPage';
-import MovieDetailsPage from './views/MovieDetailsPage';
+import HomePage from './pages/HomePage/HomePage';
+import MoviesPage from './pages/MoviesPage';
+import MovieDetailsPage from './pages/MovieDetailsPage';
 import PageNotFound from './components/PageNotFound';
 
 import s from './App.module.css';
 
-function App() {
+const App = () => {
   return (
     <>
       <ul className={s.navigations}>
@@ -23,12 +23,12 @@ function App() {
       </ul>
       <Switch>
         <Route exact path="/" component={HomePage} />
-        <Route path="/movies" component={MoviesPage} />
         <Route path="/movies/:movieId" component={MovieDetailsPage} />
+        <Route path="/movies" component={MoviesPage} />
         <Route component={PageNotFound} />
       </Switch>
     </>
   );
-}
+};
 
 export default App;
