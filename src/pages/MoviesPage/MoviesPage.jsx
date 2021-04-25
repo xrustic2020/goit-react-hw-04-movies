@@ -1,44 +1,61 @@
-import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
-// import Axios from 'axios';
+import { useState, useEffect, useRef } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import s from './MoviesPage.module.css';
-import API from '../../API/settings';
+import API from 'API/settings';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default class MoviesPage extends Component {
-  state = {
-    query: '',
-    films: [],
-  };
+import SearchResult from 'components/SearchResult';
 
-  async componentDidUpdate(prevProps, prevState) {
-    if (prevState.query !== this.state.query) {
-      const response = await API.filmDetailsRequest(this.state.query);
-      this.setState({ films: response });
+const MoviesPage = () => {
+  const location = useLocation();
+  const { search } = location;
+  const initialQueryState = queryString.parse(search);
+
+  const { push } = useHistory();
+  const inputRef = useRef();
+
+  const [query, setQuery] = useState(initialQueryState.query || '');
+  const [films, setFilms] = useState([]);
+
+  useEffect(() => {
+    inputRef.current.focus();
+    if (query) onSubmit();
+  }, []); // eslint-disable-line
+
+  const onSubmit = () => {
+    if (!query) return toast.warn('Please enter the title of the movie first');
+    push({
+      ...location,
+      search: `?query=${query}`,
+    });
+
+    async function request() {
+      const response = await API.searchFilms(query);
+      setFilms(response.data.results);
     }
-  }
-
-  onSubmit = evt => {
-    evt.preventDefault();
+    request();
   };
 
-  handleInput = evt => {
-    this.setState({ query: evt.target.value });
-  };
+  return (
+    <div className={s.container}>
+      <input
+        className={s.search}
+        type="text"
+        name="search"
+        value={query}
+        ref={inputRef}
+        onChange={evt => setQuery(evt.target.value)}
+      />
+      <button type="submit" className={s.submit} onClick={onSubmit}>
+        Search
+      </button>
 
-  render() {
-    return (
-      <div className={s.container}>
-        <input
-          className={s.search}
-          type="text"
-          name="search"
-          id="query"
-          onChange={this.handleInput}
-        />
-        <button className={s.submit} type="submit" onClick={this.onSubmit}>
-          Search
-        </button>
-      </div>
-    );
-  }
-}
+      {films.length > 0 && <SearchResult films={films} query={query} />}
+      <ToastContainer />
+    </div>
+  );
+};
+
+export default MoviesPage;

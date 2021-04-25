@@ -11,18 +11,18 @@ const MovieDetailsPage = lazy(() =>
 const MoviesPage = lazy(() =>
   import('../pages/MoviesPage' /* webpackChunkName: "MoviesPage" */),
 );
+const Cast = lazy(() =>
+  import('components/Cast' /* webpackChunkName: "Cast" */),
+);
+const Reviews = lazy(() =>
+  import('components/Reviews' /* webpackChunkName: "Reviews" */),
+);
 
-const routes = [
+const app = [
   {
     path: '/',
     label: 'Home Page',
     component: HomePage,
-    exact: true,
-  },
-  {
-    path: '/movies',
-    label: 'Movies Page',
-    component: MoviesPage,
     exact: true,
   },
   {
@@ -32,17 +32,31 @@ const routes = [
     exact: false,
   },
   {
+    path: '/movies',
+    label: 'Movies Page',
+    component: MoviesPage,
+    exact: false,
+  },
+];
+
+const filmsAdditions = [
+  {
     path: '/movies/:movieId/cast',
     label: 'Movie Cast',
-    component: MovieDetailsPage,
+    component: Cast,
     exact: true,
   },
   {
     path: '/movies/:movieId/reviews',
     label: 'Movie Reviews',
-    component: MovieDetailsPage,
+    component: Reviews,
     exact: true,
   },
 ];
+
+const routes = {
+  app,
+  filmsAdditions,
+};
 
 export default routes;
