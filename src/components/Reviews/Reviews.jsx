@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import API from 'API/settings';
+import s from './Reviews.module.css';
+import scrolling from 'utils/scrolling';
 
 const Reviews = ({
   match: {
@@ -7,11 +9,13 @@ const Reviews = ({
   },
 }) => {
   const [reviews, setReviews] = useState('');
+  const reviewsListRef = useRef();
 
   useEffect(() => {
     async function request() {
       const response = await API.getFilmReviews(movieId);
       setReviews(response.data.results);
+      scrolling(reviewsListRef);
     }
 
     if (!reviews) {
@@ -20,8 +24,8 @@ const Reviews = ({
   }, [movieId, reviews]);
 
   return (
-    <ul>
-      {reviews > 0 ? (
+    <ul className={s.reviewsList} ref={reviewsListRef}>
+      {reviews.length > 0 ? (
         reviews.map(el => (
           <li key={el.id}>
             <h3>Author: {el.author}</h3>

@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import API from 'API/settings';
 import s from './Cast.module.css';
+import scrolling from 'utils/scrolling';
 
 const Cast = ({
   match: {
@@ -8,11 +9,13 @@ const Cast = ({
   },
 }) => {
   const [cast, setCast] = useState('');
+  const castListRef = useRef();
 
   useEffect(() => {
     async function request() {
       const response = await API.getFilmCast(movieId);
       setCast(response.data.cast);
+      scrolling(castListRef);
     }
 
     if (!cast) {
@@ -21,23 +24,20 @@ const Cast = ({
   }, [movieId, cast]);
 
   return (
-    <>
-      <h2>Cast</h2>
-      <ul className={s.castList}>
-        {cast &&
-          cast.map(el => (
-            <li key={el.id}>
-              <img
-                width="200"
-                src={el.profile_path && `${API.baseImgUrl}${el.profile_path}`}
-                alt={el.name}
-              />
-              <p>{el.name}</p>
-              <p>{el.character}</p>
-            </li>
-          ))}
-      </ul>
-    </>
+    <ul className={s.castList} ref={castListRef}>
+      {cast &&
+        cast.map(el => (
+          <li key={el.id}>
+            <img
+              width="200"
+              src={el.profile_path && `${API.baseImgUrl}${el.profile_path}`}
+              alt={el.name}
+            />
+            <p>{el.name}</p>
+            <p>{el.character}</p>
+          </li>
+        ))}
+    </ul>
   );
 };
 

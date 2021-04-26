@@ -54,9 +54,40 @@ const filmsAdditions = [
   },
 ];
 
+const link = {
+  navigation: [
+    {
+      path: '/',
+      label: 'Home',
+      exact: true,
+    },
+    {
+      path: '/movies',
+      label: 'Movies',
+      exact: false,
+    },
+  ],
+
+  getAdditional(id) {
+    return [
+      {
+        path: `/movies/${id}/cast`,
+        label: 'Cast',
+        exact: false,
+      },
+      {
+        path: `/movies/${id}/reviews`,
+        label: 'Reviews',
+        exact: false,
+      },
+    ];
+  },
+};
+
 const routes = {
   app,
   filmsAdditions,
+  link,
 };
 
 export default routes;

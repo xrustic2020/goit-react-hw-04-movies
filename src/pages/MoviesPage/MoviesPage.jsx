@@ -24,18 +24,35 @@ const MoviesPage = () => {
     if (query) onSubmit();
   }, []); // eslint-disable-line
 
+  const resetSearchQuery = message => {
+    setFilms([]);
+    push({
+      ...location,
+      search: '',
+    });
+    return toast.warn(message);
+  };
+
   const onSubmit = () => {
-    if (!query) return toast.warn('Please enter the title of the movie first');
+    if (!query) {
+      return resetSearchQuery('Please enter the title of the movie first');
+    }
+
+    async function request() {
+      const response = await API.searchFilms(query);
+      if (!response.data.total_results) {
+        return resetSearchQuery(
+          `No results were found for "${query}". Try searching again`,
+        );
+      }
+
+      setFilms(response.data.results);
+    }
+    request();
     push({
       ...location,
       search: `?query=${query}`,
     });
-
-    async function request() {
-      const response = await API.searchFilms(query);
-      setFilms(response.data.results);
-    }
-    request();
   };
 
   return (
@@ -53,6 +70,7 @@ const MoviesPage = () => {
       </button>
 
       {films.length > 0 && <SearchResult films={films} query={query} />}
+
       <ToastContainer />
     </div>
   );

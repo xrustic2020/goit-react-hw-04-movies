@@ -8,14 +8,19 @@
 
 .filmInformation {
   display: flex;
-  justify-content: center;
+  margin-bottom: 10px;
 }
 
 .textInformation {
   padding-left: 32px;
 }
 
-.addintionalInformation {
-  display: flex;
-  flex-direction: column;
+.border {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+}
+
+.genresList {
+  list-style: none;
+  padding-left: 0;
 }
