@@ -33,8 +33,6 @@ const MovieDetailsPage = ({
     genres,
   } = film;
 
-  // !!! переделать Жанры в список !!!
-
   return (
     <div className={s.container}>
       <button className={s.button} type="button" onClick={goBack}>
