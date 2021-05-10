@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Loader from 'components/Loader';
 import routes from 'data/routes';
 import API from 'API/settings';
@@ -45,7 +45,7 @@ const MovieDetailsPage = ({
           alt={original_title}
           width="300"
           height="450"
-        ></img>
+        />
         <div className={s.textInformation}>
           <h1>{`${original_title} (${Number.parseInt(release_date)})`}</h1>
           <p>User Score: {10 * vote_average} %</p>
@@ -64,9 +64,11 @@ const MovieDetailsPage = ({
       />
 
       <Suspense fallback={<Loader />}>
-        {routes.filmsAdditions.map(({ path, exact, component: Component }) => (
+        <Switch>
+          {routes.filmsAdditions.map(({ path, exact, component: Component }) => (
           <Route key={path} path={path} exact={exact} component={Component} />
         ))}
+        </Switch>
       </Suspense>
     </div>
   );

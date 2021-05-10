@@ -1,36 +1,33 @@
 import axios from 'axios';
-import key from 'apiKey';
+// import key from 'apiKey';
+
+const key = '3fb33685800e055b072f7d1be89729ed';
+
+axios.defaults.baseURL = 'https://api.themoviedb.org/3/';
+axios.defaults.params = {
+  api_key: key,
+};
 
 const baseImgUrl = 'https://image.tmdb.org/t/p/original';
 
 async function searchFilms(query) {
-  return axios.get(
-    `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${query}&page=1`,
-  );
+  return axios.get(`search/movie?query=${query}&page=1`);
 }
 
 async function getTrendingFilms() {
-  return axios.get(
-    `https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`,
-  );
+  return axios.get(`trending/movie/day`);
 }
 
 async function getOneFilmDetails(id) {
-  return axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`,
-  );
+  return axios.get(`movie/${id}?language=en-US`);
 }
 
 async function getFilmCast(id) {
-  return axios.get(
-    `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${key}`,
-  );
+  return axios.get(`movie/${id}/credits`);
 }
 
 async function getFilmReviews(id) {
-  return axios.get(
-    `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${key}`,
-  );
+  return axios.get(`movie/${id}/reviews`);
 }
 
 const API = {
